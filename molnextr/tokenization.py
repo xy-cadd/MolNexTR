@@ -4,6 +4,7 @@ import json
 import random
 import numpy as np
 from SmilesPE.pretokenizer import atomwise_tokenizer
+import importlib
 
 # Define special token IDs and corresponding strings
 PAD_ID = 0
@@ -525,20 +526,25 @@ def get_tokenizer(args):
     Returns:
         dict: Tokenizer(s) corresponding to specified formats.
     """
+    #vocab_uspto = os.path(importlib.resources.files('MolNexTR').joinpath('vocab', 'vocab_uspto.json'))
+    #vocab_chars = os.path(importlib.resources.files('MolNexTR').joinpath('vocab', 'vocab_chars.json'))
     tokenizer = {}
     for format_ in args.formats:
         if format_ == 'atomtok':
             if args.vocab_file is None:
                 args.vocab_file = os.path.join(os.path.dirname(__file__), 'vocab/vocab_uspto.json')
+                # args.vocab_file = vocab_uspto
             tokenizer['atomtok'] = Tokenizer(args.vocab_file)
         elif format_ == "atomtok_coords":
             if args.vocab_file is None:
                 args.vocab_file = os.path.join(os.path.dirname(__file__), 'vocab/vocab_uspto.json')
+                # args.vocab_file = vocab_uspto
             tokenizer["atomtok_coords"] = NodeTokenizer(args.coord_bins, args.vocab_file, args.sep_xy,
                                                         continuous_coords=args.continuous_coords)
         elif format_ == "chartok_coords":
             if args.vocab_file is None:
                 args.vocab_file = os.path.join(os.path.dirname(__file__), 'vocab/vocab_chars.json')
+                # args.vocab_file = vocab_chars
             tokenizer["chartok_coords"] = CharTokenizer(args.coord_bins, args.vocab_file, args.sep_xy,
                                                         continuous_coords=args.continuous_coords)
     return tokenizer

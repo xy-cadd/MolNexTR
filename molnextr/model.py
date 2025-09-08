@@ -157,8 +157,8 @@ class molnextr:
         Returns:
             dict: Prediction result for the image.
         """
-        return self.predict_images([
-            image], return_atoms_bonds=return_atoms_bonds, return_confidence=return_confidence)[0]
+        return self.predict_images(
+            [image], return_atoms_bonds=return_atoms_bonds, return_confidence=return_confidence)[0]
 
     def predict_image_files(self, image_files: List, return_atoms_bonds=False, return_confidence=False):
         """
@@ -178,7 +178,8 @@ class molnextr:
             image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
             input_images.append(image)
         return self.predict_images(
-            input_images, return_atoms_bonds=return_atoms_bonds, return_confidence=return_confidence)
+            input_images, return_atoms_bonds=return_atoms_bonds, return_confidence=return_confidence
+        )
 
     def predict_final_results(self, image_file: str, return_atoms_bonds=False, return_confidence=False):
         """

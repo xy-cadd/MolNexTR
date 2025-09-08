@@ -4,3 +4,6 @@
 */figure
 */requirements.txt
 *.ipynb
+build/*
+*.egg-info
+**/__pycache__/*
