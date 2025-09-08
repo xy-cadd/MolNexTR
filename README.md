@@ -5,12 +5,6 @@ This is the official code of the paper "MolNexTR: a generalized deep learning mo
 <p align="justify">
 In this work, We propose MolNexTR, a novel graph generation model. The model follows the encoder-decoder architecture, takes three-channel molecular images as input, outputs molecular graph structure prediction, and can be easily converted to SMILES. We aim to enhance the robustness and generalization of the molecular structure recognition model by enhancing the feature extraction ability of the model and the augmentation strategy, to deal with any molecular images that may appear in the real literature.
 
-[comment]: <> ()
-![visualization](figure/arch.png)
-<div align="center">
-Overview of our MolNexTR model.
-</div> 
-
 :sparkles::sparkles: Please also check out our newest work on versatile and multimodal information extraction from the chemical literature using a multi-agent system named ChemEAGLE: [paper](https://arxiv.org/abs/2507.20230), [code](https://github.com/CYF2000127/ChemEagle)!
 
 ## :rocket: Using the code and the model
