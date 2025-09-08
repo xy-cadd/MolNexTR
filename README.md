@@ -22,7 +22,7 @@ git clone https://github.com/CYF2000127/MolNexTR
 ### Example usage of the model
 1. First create and activate a [conda](https://numdifftools.readthedocs.io/en/stable/how-to/create_virtual_env_with_conda.html) environment with the following command in a Linux, Windows, or MacOS environment (Linux is the most recommended):
 ```
-conda create -n molnextr python=3.8
+conda create -n molnextr python<3.12
 conda activate molnextr
 ```
 
@@ -76,57 +76,6 @@ The output dictionary includes the atom sets, bond sets, predicted MolFile, and 
 }   
 ```
 
-
-
-
-## :fire: Experiments
-
-### Data preparation
-For training and inference, please download the following datasets to your own path.
-#### Training datasets
-1. **Synthetic:**  [PubChem](https://huggingface.co/datasets/CYF200127/MolNexTR/blob/main/train_pubchem.csv)
-2. **Realistic:**  [USPTO](https://huggingface.co/datasets/CYF200127/MolNexTR/blob/main/train_uspto.zip)
-
-#### Testing datasets
-1. **Synthetic:**  [Indigo, ChemDraw](https://huggingface.co/datasets/CYF200127/MolNexTR/blob/main/synthetic.zip)
-2. **Realistic:**  [CLEF, UOB, USPTO, JPO, Staker, ACS](https://huggingface.co/datasets/CYF200127/MolNexTR/blob/main/real.zip) 
-3. **Perturbed by image transform:** [CLEF, UOB, USPTO, JPO, Staker, ACS](https://huggingface.co/datasets/CYF200127/MolNexTR/blob/main/perturb_by_imgtransform.zip)
-4. **Perturbed by curved arrows:** [CLEF, UOB, USPTO, JPO, Staker, ACS](https://huggingface.co/datasets/CYF200127/MolNexTR/blob/main/perturb_by_arrows.zip)
-
-
-### Train
-Note: we recommend users to use linux to train the model.
-Run the following command:
-```
-sh ./exps/train.sh
-```
-The default batch size was set to 256. And it takes about 20 hours to train with 10 NVIDIA RTX 3090 GPUs. Please modify the corresponding parameters according to your hardware configuration. 
-
-### Inference
-Run the following command:
-```
-sh ./exps/eval.sh
-```
-The default batch size was set to 32 with a single NVIDIA RTX 3090 GPU. Please modify the corresponding parameters according to your hardware configuration.
-The outputs include the main metrics we used, such as SMILES and graph exact matching accuracy.
-
-### Prediction
-Run the following command:
-```
-python prediction.py --model_path your_model_path --image_path your_image_path
-```
-### Visualization
-Use [`visualization.ipynb`](visualization.ipynb) to visualize the ground truth and the predictions.
-
-We also show some qualitative results of our method below:
-
-![visualization](figure/vs1.png)
-<div align="center">
-Qualitative results of our method on ACS.
-
-![visualization](figure/vs3.png)
-Qualitative results of our method on some hand-drawn molecular images.
-</div> 
 
 ## ✅ Citation
 Chen, Yufan, et al. "MolNexTR: a generalized deep learning model for molecular image recognition." Journal of Cheminformatics 16.1 (2024): 141.
