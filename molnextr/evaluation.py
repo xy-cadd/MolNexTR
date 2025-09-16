@@ -59,10 +59,12 @@ def convert_smiles_to_canonsmiles(
     Returns:
         tuple: List of canonical SMILES and the fraction of successfully converted SMILES.
     """
-    with multiprocessing.Pool(num_workers) as p:
-        results = p.starmap(canonicalize_smiles,
+    p = multiprocessing.Pool(num_workers)
+    results = p.starmap(canonicalize_smiles,
                             [(smiles, ignore_chiral, ignore_cistrans, replace_rgroup) for smiles in smiles_list],
                             chunksize=128)
+    p.close()
+    p.join()
     canon_smiles, success = zip(*results)
     return list(canon_smiles), np.mean(success)
 

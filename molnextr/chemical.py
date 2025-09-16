@@ -164,9 +164,11 @@ def _convert_smiles_to_inchi(smiles):
 
 
 def convert_smiles_to_inchi(smiles_list, num_workers=16):
-    with multiprocessing.Pool(num_workers) as p:
-        inchi_list = p.map(_convert_smiles_to_inchi, smiles_list, chunksize=128)
-    n_success = sum([x is not None for x in inchi_list])
+    p = multiprocessing.Pool(num_workers)
+    inchi_list = p.map(_convert_smiles_to_inchi, smiles_list, chunksize=128)
+    p.close()
+    p.join()
+
     r_success = n_success / len(inchi_list)
     inchi_list = [x if x else 'InChI=1S/H2O/h1H2' for x in inchi_list]
     return inchi_list, r_success
@@ -192,8 +194,11 @@ def _get_num_atoms(smiles):
 def get_num_atoms(smiles, num_workers=16):
     if type(smiles) is str:
         return _get_num_atoms(smiles)
-    with multiprocessing.Pool(num_workers) as p:
-        num_atoms = p.map(_get_num_atoms, smiles)
+    p = multiprocessing.Pool(num_workers)
+    num_atoms = p.map(_get_num_atoms, smiles)
+    p.close()
+    p.join()
+
     return num_atoms
 
 
@@ -719,8 +724,10 @@ def convert_graph_to_smiles(coords, symbols, edges, images=None, num_workers=16)
         results = itertools.starmap(_convert_graph_to_smiles, args_zip)
         results = list(results)
     else:
-        with multiprocessing.Pool(num_workers) as p:
-            results = p.starmap(_convert_graph_to_smiles, args_zip, chunksize=128)
+        p = multiprocessing.Pool(num_workers)
+        results = p.starmap(_convert_graph_to_smiles, args_zip, chunksize=128)
+        p.close()
+        p.join()
 
     smiles_list, molblock_list, success = zip(*results)
     r_success = np.mean(success)
@@ -758,11 +765,13 @@ def _postprocess_smiles(smiles, coords=None, symbols=None, edges=None, molblock=
 
 
 def postprocess_smiles(smiles, coords=None, symbols=None, edges=None, molblock=False, num_workers=16):
-    with multiprocessing.Pool(num_workers) as p:
-        if coords is not None and symbols is not None and edges is not None:
-            results = p.starmap(_postprocess_smiles, zip(smiles, coords, symbols, edges), chunksize=128)
-        else:
-            results = p.map(_postprocess_smiles, smiles, chunksize=128)
+    p = multiprocessing.Pool(num_workers)
+    if coords is not None and symbols is not None and edges is not None:
+        results = p.starmap(_postprocess_smiles, zip(smiles, coords, symbols, edges), chunksize=128)
+    else:
+        results = p.map(_postprocess_smiles, smiles, chunksize=128)
+    p.close()
+    p.join()
     smiles_list, molblock_list, success = zip(*results)
     r_success = np.mean(success)
     return smiles_list, molblock_list, r_success
@@ -783,6 +792,8 @@ def _keep_main_molecule(smiles, debug=False):
 
 
 def keep_main_molecule(smiles, num_workers=16):
-    with multiprocessing.Pool(num_workers) as p:
-        results = p.map(_keep_main_molecule, smiles, chunksize=128)
+    p = multiprocessing.Pool(num_workers)
+    results = p.map(_keep_main_molecule, smiles, chunksize=128)
+    p.close()
+    p.join()
     return results
